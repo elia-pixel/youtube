@@ -6,90 +6,258 @@
 <title>YouTube Post Generator</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', sans-serif; background: #f0f0f0; color: #0f0f0f; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-  body.dark { background: #181818; color: #f1f1f1; }
+  body {
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    background: #0f0f0f;
+    color: #f1f1f1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
 
   /* HEADER */
-  #header { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.08); flex-shrink: 0; }
-  body.dark #header { background: #1a1a1a; border-color: #2a2a2a; }
+  #header {
+    background: #212121;
+    border-bottom: 1px solid #303030;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
   .header-left { display: flex; align-items: center; gap: 10px; }
-  .header-sub { font-size: 12px; color: #606060; font-weight: 500; }
-  body.dark .header-sub { color: #aaa; }
-  .header-btns { display: flex; gap: 8px; }
-  .btn { background: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 20px; padding: 6px 14px; cursor: pointer; font-size: 12px; font-weight: 500; color: #0f0f0f; transition: all 0.2s; }
-  .btn:hover { background: #ebebeb; }
-  body.dark .btn { background: #272727; border-color: #2a2a2a; color: #f1f1f1; }
-  body.dark .btn:hover { background: #333; }
+  .header-sub { font-size: 12px; color: #aaa; font-weight: 500; }
+  .btn {
+    background: #303030;
+    border: 1px solid #3f3f3f;
+    border-radius: 20px;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    color: #f1f1f1;
+    transition: background 0.2s;
+  }
+  .btn:hover { background: #3f3f3f; }
 
-  /* LAYOUT */
+  /* MAIN */
   #main { display: flex; flex: 1; overflow: hidden; }
 
   /* LEFT PANEL */
-  #left { width: 330px; min-width: 330px; background: #fff; border-right: 1px solid #e0e0e0; overflow-y: auto; padding: 18px; }
-  body.dark #left { background: #1a1a1a; border-color: #2a2a2a; }
-
-  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #606060; margin-bottom: 10px; }
-  body.dark .section-label { color: #aaa; }
-  .divider { height: 1px; background: #e0e0e0; margin: 18px 0; }
-  body.dark .divider { background: #2a2a2a; }
-
-  .inp { width: 100%; padding: 9px 11px; border-radius: 8px; border: 1px solid #e0e0e0; background: #f8f8f8; color: #0f0f0f; font-size: 13px; outline: none; font-family: inherit; transition: border 0.2s; }
+  #left {
+    width: 320px;
+    min-width: 320px;
+    background: #212121;
+    border-right: 1px solid #303030;
+    overflow-y: auto;
+    padding: 18px;
+  }
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .divider { height: 1px; background: #303030; margin: 16px 0; }
+  .inp {
+    width: 100%;
+    padding: 9px 11px;
+    border-radius: 8px;
+    border: 1px solid #3f3f3f;
+    background: #2a2a2a;
+    color: #f1f1f1;
+    font-size: 13px;
+    outline: none;
+    font-family: inherit;
+    transition: border 0.2s;
+  }
   .inp:focus { border-color: #ff0000; }
-  body.dark .inp { background: #272727; border-color: #2a2a2a; color: #f1f1f1; }
-  body.dark .inp:focus { border-color: #ff0000; }
   textarea.inp { resize: vertical; line-height: 1.5; }
-  .char-count { font-size: 11px; color: #aaa; margin-top: 4px; }
-
-  .grad-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-  .grad-btn { width: 36px; height: 36px; border-radius: 10px; border: 3px solid transparent; cursor: pointer; transition: border 0.15s, transform 0.1s; }
-  .grad-btn:hover { transform: scale(1.1); }
-  .grad-btn.active { border-color: #ff0000; }
-
-  .emoji-grid { display: flex; flex-wrap: wrap; gap: 7px; }
-  .emoji-btn { width: 36px; height: 36px; border-radius: 10px; border: 2px solid transparent; cursor: pointer; font-size: 19px; background: #f8f8f8; transition: all 0.15s; }
-  .emoji-btn:hover { transform: scale(1.15); }
-  .emoji-btn.active { border-color: #ff0000; background: #ffe5e5; }
-  body.dark .emoji-btn { background: #272727; }
-  body.dark .emoji-btn.active { background: #3a1010; }
-
+  .char-count { font-size: 11px; color: #666; margin-top: 4px; }
   .row2 { display: flex; gap: 10px; }
   .row2 > div { flex: 1; }
-  .sub-label { font-size: 11px; color: #606060; margin-bottom: 6px; }
-  body.dark .sub-label { color: #aaa; }
+  .sub-label { font-size: 11px; color: #888; margin-bottom: 6px; }
+
+  /* UPLOAD AREA */
+  #upload-area {
+    width: 100%;
+    border: 2px dashed #3f3f3f;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #2a2a2a;
+    position: relative;
+  }
+  #upload-area:hover { border-color: #ff0000; background: #2f2020; }
+  #upload-area.has-image { border-style: solid; border-color: #ff0000; padding: 0; overflow: hidden; }
+  #upload-preview {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: none;
+    border-radius: 8px;
+  }
+  #upload-placeholder { pointer-events: none; }
+  #upload-icon { font-size: 28px; margin-bottom: 6px; }
+  #upload-text { font-size: 12px; color: #aaa; line-height: 1.5; }
+  #upload-size { font-size: 11px; color: #ff6666; margin-top: 4px; font-weight: 600; }
+  #file-input { display: none; }
+  #change-img-btn {
+    display: none;
+    width: 100%;
+    padding: 7px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  #change-img-btn:hover { background: rgba(255,0,0,0.7); }
+
+  /* THUMB TEXT OVERLAY OPTIONS */
+  .overlay-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .color-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all 0.15s; flex-shrink: 0; }
+  .color-dot.active { border-color: #fff; transform: scale(1.2); }
 
   /* RIGHT PANEL */
-  #right { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; overflow-y: auto; background: #e8e8e8; }
-  body.dark #right { background: #111; }
-  .preview-label { font-size: 10px; color: #bbb; margin-bottom: 18px; letter-spacing: 1px; }
-  body.dark .preview-label { color: #444; }
+  #right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 40px;
+    overflow-y: auto;
+    background: #0f0f0f;
+  }
 
-  /* CARD */
-  #card { width: 100%; max-width: 490px; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 12px 50px rgba(0,0,0,0.18); }
-  body.dark #card { background: #1f1f1f; }
+  /* CARD — YouTube dark mode style */
+  #card { width: 100%; max-width: 500px; }
 
   /* THUMBNAIL */
-  #thumb { position: relative; width: 100%; padding-bottom: 56.25%; overflow: hidden; }
-  #thumb-inner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-  .deco1 { position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.08); }
-  .deco2 { position: absolute; bottom: -60px; left: -30px; width: 250px; height: 250px; border-radius: 50%; background: rgba(0,0,0,0.12); }
-  #thumb-emoji { font-size: 76px; filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5)); z-index: 2; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -55%); }
-  #thumb-text { position: absolute; bottom: 12px; left: 12px; right: 55px; font-size: 20px; font-weight: 900; color: white; text-shadow: 2px 3px 10px rgba(0,0,0,0.9); line-height: 1.2; z-index: 2; display: none; }
-  #duration { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.85); color: white; padding: 2px 7px; border-radius: 4px; font-size: 12px; font-weight: 700; z-index: 3; }
+  #thumb-wrap {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1a1a1a;
+    aspect-ratio: 16/9;
+  }
+  #thumb-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,#1a1a2e,#0f3460);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+  #thumb-emoji-el {
+    font-size: 72px;
+    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5));
+  }
+  #thumb-overlay-text {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    right: 60px;
+    font-size: 20px;
+    font-weight: 900;
+    color: white;
+    text-shadow: 2px 3px 10px rgba(0,0,0,0.9);
+    line-height: 1.2;
+    display: none;
+    word-break: break-word;
+  }
+  #duration-badge {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.85);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+  }
 
-  /* INFO */
-  #info { padding: 14px 16px 18px; }
-  #info-row { display: flex; gap: 12px; align-items: flex-start; }
-  #avatar { width: 36px; height: 36px; min-width: 36px; border-radius: 50%; background: linear-gradient(135deg, #ff0000, #cc0000); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; }
-  #info-body { flex: 1; }
-  #card-title { font-size: 15px; font-weight: 600; line-height: 1.4; margin-bottom: 4px; color: #0f0f0f; }
-  body.dark #card-title { color: #f1f1f1; }
-  #card-title.placeholder { color: #aaa; font-weight: 400; font-style: italic; }
-  #card-meta { font-size: 13px; color: #606060; }
-  body.dark #card-meta { color: #aaa; }
-  #card-desc { font-size: 13px; color: #606060; margin-top: 10px; line-height: 1.5; border-top: 1px solid #e0e0e0; padding-top: 10px; display: none; }
-  body.dark #card-desc { color: #aaa; border-color: #2a2a2a; }
+  /* INFO ROW */
+  #info-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-top: 12px;
+    padding: 0 2px;
+  }
+  #avatar-el {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff0000, #cc0000);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    overflow: hidden;
+  }
+  #avatar-img { width: 100%; height: 100%; object-fit: cover; display: none; }
+  #info-body { flex: 1; min-width: 0; }
+  #card-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    color: #f1f1f1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  #card-title.placeholder { color: #555; font-style: italic; font-weight: 400; }
+  #card-meta {
+    font-size: 13px;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .verified { display: inline-block; width: 14px; height: 14px; background: #aaa; border-radius: 50%; text-align: center; line-height: 14px; font-size: 9px; color: #212121; font-weight: 700; }
+  #card-desc {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 8px;
+    line-height: 1.5;
+    display: none;
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
 
-  #yt-footer { text-align: center; margin-top: 18px; opacity: 0.6; }
+  #yt-footer { text-align: center; margin-top: 22px; opacity: 0.35; }
+
+  /* scrollbar */
+  #left::-webkit-scrollbar { width: 4px; }
+  #left::-webkit-scrollbar-track { background: transparent; }
+  #left::-webkit-scrollbar-thumb { background: #3f3f3f; border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -97,16 +265,15 @@
 <!-- HEADER -->
 <div id="header">
   <div class="header-left">
-    <svg viewBox="0 0 120 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:22px;width:auto">
-      <rect x="0" y="2" width="34" height="22" rx="5" fill="#FF0000"/>
-      <polygon points="13,8 24,14 13,20" fill="white"/>
-      <text x="40" y="20" font-family="Arial,sans-serif" font-weight="bold" font-size="18" fill="#282828">YouTube</text>
+    <svg viewBox="0 0 110 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:20px;width:auto">
+      <rect x="0" y="1" width="32" height="21" rx="5" fill="#FF0000"/>
+      <polygon points="12,7 23,12.5 12,18" fill="white"/>
+      <text x="37" y="19" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#f1f1f1">YouTube</text>
     </svg>
     <span class="header-sub">Post Generator</span>
   </div>
-  <div class="header-btns">
-    <button class="btn" onclick="toggleDark()">🌙 Dark</button>
-    <button class="btn" onclick="resetAll()">Reset</button>
+  <div style="display:flex;gap:8px">
+    <button class="btn" onclick="resetAll()">↺ Reset</button>
   </div>
 </div>
 
@@ -116,140 +283,174 @@
   <!-- LEFT -->
   <div id="left">
 
-    <div class="section-label">🎨 Thumbnail Background</div>
-    <div class="grad-grid" id="grad-grid"></div>
+    <!-- THUMBNAIL UPLOAD -->
+    <div class="section-label">🖼 Thumbnail <span style="color:#666;font-size:9px;letter-spacing:0;text-transform:none;font-weight:400">(recommended: 1280×720px)</span></div>
+    <div id="upload-area" onclick="document.getElementById('file-input').click()">
+      <div id="upload-placeholder">
+        <div id="upload-icon">📁</div>
+        <div id="upload-text">Click to upload thumbnail<br><span style="color:#666">JPG, PNG, WEBP</span></div>
+        <div id="upload-size">⚡ Best size: 1280 × 720 px (16:9)</div>
+      </div>
+      <img id="upload-preview" alt="thumbnail preview">
+      <button id="change-img-btn" onclick="event.stopPropagation(); document.getElementById('file-input').click()">🔄 Change Image</button>
+    </div>
+    <input type="file" id="file-input" accept="image/*" onchange="handleImageUpload(event)">
 
     <div class="divider"></div>
 
-    <div class="section-label">😎 Thumbnail Icon</div>
-    <div class="emoji-grid" id="emoji-grid"></div>
-
-    <div class="divider"></div>
-
+    <!-- TEXT ON THUMBNAIL -->
     <div class="section-label">✍️ Text on Thumbnail</div>
-    <input class="inp" id="thumb-text-inp" type="text" placeholder="e.g. YOU WON'T BELIEVE THIS..." oninput="updateThumbText()">
+    <input class="inp" id="thumb-text-inp" type="text" placeholder="e.g. $5/day WORKS?!" oninput="updateThumbText()" style="margin-bottom:8px">
+    <div class="overlay-row">
+      <span style="font-size:11px;color:#888">Color:</span>
+      <div class="color-dot active" style="background:#ffffff" onclick="setTextColor('#ffffff',this)" title="White"></div>
+      <div class="color-dot" style="background:#ffdd00" onclick="setTextColor('#ffdd00',this)" title="Yellow"></div>
+      <div class="color-dot" style="background:#ff4444" onclick="setTextColor('#ff4444',this)" title="Red"></div>
+      <div class="color-dot" style="background:#00e676" onclick="setTextColor('#00e676',this)" title="Green"></div>
+      <div class="color-dot" style="background:#40c4ff" onclick="setTextColor('#40c4ff',this)" title="Blue"></div>
+    </div>
 
     <div class="divider"></div>
 
+    <!-- DURATION -->
+    <div class="section-label">⏱ Duration</div>
+    <input class="inp" id="duration-inp" type="text" value="10:24" oninput="updateDuration()">
+
+    <div class="divider"></div>
+
+    <!-- CHANNEL -->
     <div class="section-label">📺 Channel Name</div>
     <input class="inp" id="channel-inp" type="text" value="YourChannel" oninput="updateMeta()">
 
     <div class="divider"></div>
 
+    <!-- TITLE -->
     <div class="section-label">📝 Video Title</div>
-    <textarea class="inp" id="title-inp" rows="3" placeholder="Write your video title here..." oninput="updateTitle(); countChars('title-inp','title-count',100)" maxlength="100"></textarea>
+    <textarea class="inp" id="title-inp" rows="3" placeholder="How to CRUSH Facebook Ads with a Small Budget..." oninput="updateTitle(); countChars('title-inp','title-count',100)" maxlength="100"></textarea>
     <div class="char-count"><span id="title-count">0</span> / 100</div>
 
     <div class="divider"></div>
 
-    <div class="section-label">📋 Description</div>
-    <textarea class="inp" id="desc-inp" rows="5" placeholder="Add a description..." oninput="updateDesc(); countChars('desc-inp','desc-count',300)" maxlength="300"></textarea>
+    <!-- DESCRIPTION -->
+    <div class="section-label">📋 Description (optional)</div>
+    <textarea class="inp" id="desc-inp" rows="4" placeholder="Add a short description..." oninput="updateDesc(); countChars('desc-inp','desc-count',300)" maxlength="300"></textarea>
     <div class="char-count"><span id="desc-count">0</span> / 300</div>
 
     <div class="divider"></div>
 
+    <!-- STATS -->
     <div class="section-label">📊 Stats</div>
     <div class="row2">
       <div>
         <div class="sub-label">Views</div>
-        <input class="inp" id="views-inp" type="text" value="1.2M" oninput="updateMeta()">
+        <input class="inp" id="views-inp" type="text" value="48K" oninput="updateMeta()">
       </div>
       <div>
         <div class="sub-label">Posted</div>
-        <input class="inp" id="time-inp" type="text" value="2 days ago" oninput="updateMeta()">
+        <input class="inp" id="time-inp" type="text" value="2 weeks ago" oninput="updateMeta()">
       </div>
+    </div>
+
+    <!-- VERIFIED -->
+    <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
+      <input type="checkbox" id="verified-chk" checked onchange="updateMeta()" style="accent-color:#ff0000;width:14px;height:14px;cursor:pointer">
+      <label for="verified-chk" style="font-size:12px;color:#aaa;cursor:pointer">Show verified badge ✓</label>
     </div>
 
   </div>
 
   <!-- RIGHT -->
   <div id="right">
-    <div class="preview-label">LIVE PREVIEW</div>
 
+    <!-- CARD -->
     <div id="card">
-      <div id="thumb">
-        <div id="thumb-inner">
-          <div class="deco1"></div>
-          <div class="deco2"></div>
-          <div id="thumb-emoji">🎬</div>
-          <div id="thumb-text"></div>
-          <div id="duration">10:24</div>
+
+      <!-- THUMBNAIL -->
+      <div id="thumb-wrap">
+        <div id="thumb-bg">
+          <img id="thumb-img" alt="thumbnail">
+          <div id="thumb-emoji-el">🎬</div>
         </div>
+        <div id="thumb-overlay-text"></div>
+        <div id="duration-badge">10:24</div>
       </div>
-      <div id="info">
-        <div id="info-row">
-          <div id="avatar">Y</div>
-          <div id="info-body">
-            <div id="card-title" class="placeholder">Your video title will appear here</div>
-            <div id="card-meta">YourChannel · 1.2M views · 2 days ago</div>
-            <div id="card-desc"></div>
+
+      <!-- INFO -->
+      <div id="info-row">
+        <div id="avatar-el">
+          <img id="avatar-img" alt="avatar">
+          <span id="avatar-letter">Y</span>
+        </div>
+        <div id="info-body">
+          <div id="card-title" class="placeholder">Your video title will appear here</div>
+          <div id="card-meta">
+            <span id="meta-channel">YourChannel</span>
+            <span id="meta-verified" class="verified">✓</span>
+            <span style="color:#666">·</span>
+            <span id="meta-views">48K views</span>
+            <span style="color:#666">·</span>
+            <span id="meta-time">2 weeks ago</span>
           </div>
+          <div id="card-desc"></div>
         </div>
       </div>
+
     </div>
 
+    <!-- YT LOGO FOOTER -->
     <div id="yt-footer">
-      <svg viewBox="0 0 120 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:18px;width:auto">
-        <rect x="0" y="2" width="34" height="22" rx="5" fill="#FF0000"/>
-        <polygon points="13,8 24,14 13,20" fill="white"/>
-        <text x="40" y="20" font-family="Arial,sans-serif" font-weight="bold" font-size="18" fill="#282828">YouTube</text>
+      <svg viewBox="0 0 110 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:18px;width:auto">
+        <rect x="0" y="1" width="32" height="21" rx="5" fill="#FF0000"/>
+        <polygon points="12,7 23,12.5 12,18" fill="white"/>
+        <text x="37" y="19" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="#f1f1f1">YouTube</text>
       </svg>
     </div>
+
   </div>
 </div>
 
 <script>
-  const GRADIENTS = [
-    "linear-gradient(135deg,#ff4e50,#f9d423)",
-    "linear-gradient(135deg,#0072ff,#00c6ff)",
-    "linear-gradient(135deg,#1a1a2e,#0f3460)",
-    "linear-gradient(135deg,#134e5e,#71b280)",
-    "linear-gradient(135deg,#f7971e,#ffd200)",
-    "linear-gradient(135deg,#f953c6,#b91d73)",
-    "linear-gradient(135deg,#7f00ff,#e100ff)",
-    "linear-gradient(135deg,#232526,#414345)",
-  ];
-  const EMOJIS = ["🎬","🔥","💡","🚀","🎮","💰","😱","🏆","🎵","✨","💥","🤯"];
+  let textColor = '#ffffff';
 
-  let currentGrad = 0;
-  let currentEmoji = "🎬";
-  let isDark = false;
+  function handleImageUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    const img = document.getElementById('thumb-img');
+    const emoji = document.getElementById('thumb-emoji-el');
+    const preview = document.getElementById('upload-preview');
+    const placeholder = document.getElementById('upload-placeholder');
+    const changeBtn = document.getElementById('change-img-btn');
+    const area = document.getElementById('upload-area');
 
-  // Build gradient buttons
-  const gg = document.getElementById('grad-grid');
-  GRADIENTS.forEach((g, i) => {
-    const b = document.createElement('button');
-    b.className = 'grad-btn' + (i === 0 ? ' active' : '');
-    b.style.background = g;
-    b.title = "Gradient " + (i+1);
-    b.onclick = () => {
-      currentGrad = i;
-      document.querySelectorAll('.grad-btn').forEach((x,j) => x.classList.toggle('active', j===i));
-      document.getElementById('thumb-inner').style.background = GRADIENTS[i];
-    };
-    gg.appendChild(b);
-  });
-  document.getElementById('thumb-inner').style.background = GRADIENTS[0];
+    img.src = url;
+    img.style.display = 'block';
+    emoji.style.display = 'none';
 
-  // Build emoji buttons
-  const eg = document.getElementById('emoji-grid');
-  EMOJIS.forEach(e => {
-    const b = document.createElement('button');
-    b.className = 'emoji-btn' + (e === '🎬' ? ' active' : '');
-    b.textContent = e;
-    b.onclick = () => {
-      currentEmoji = e;
-      document.querySelectorAll('.emoji-btn').forEach(x => x.classList.toggle('active', x.textContent === e));
-      document.getElementById('thumb-emoji').textContent = e;
-    };
-    eg.appendChild(b);
-  });
+    preview.src = url;
+    preview.style.display = 'block';
+    placeholder.style.display = 'none';
+    changeBtn.style.display = 'block';
+    area.classList.add('has-image');
+  }
 
   function updateThumbText() {
     const val = document.getElementById('thumb-text-inp').value;
-    const el = document.getElementById('thumb-text');
+    const el = document.getElementById('thumb-overlay-text');
     el.textContent = val;
     el.style.display = val ? 'block' : 'none';
+    el.style.color = textColor;
+  }
+
+  function setTextColor(color, dot) {
+    textColor = color;
+    document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+    dot.classList.add('active');
+    document.getElementById('thumb-overlay-text').style.color = color;
+  }
+
+  function updateDuration() {
+    document.getElementById('duration-badge').textContent = document.getElementById('duration-inp').value || '0:00';
   }
 
   function updateTitle() {
@@ -268,7 +469,7 @@
     const val = document.getElementById('desc-inp').value;
     const el = document.getElementById('card-desc');
     if (val) {
-      el.textContent = val.length > 130 ? val.slice(0,130)+'...' : val;
+      el.textContent = val.length > 150 ? val.slice(0,150)+'...' : val;
       el.style.display = 'block';
     } else {
       el.style.display = 'none';
@@ -279,19 +480,20 @@
     const ch = document.getElementById('channel-inp').value || 'YourChannel';
     const v = document.getElementById('views-inp').value || '0';
     const t = document.getElementById('time-inp').value || 'just now';
-    document.getElementById('card-meta').textContent = ch + ' · ' + v + ' views · ' + t;
-    document.getElementById('avatar').textContent = ch[0].toUpperCase();
+    const verified = document.getElementById('verified-chk').checked;
+
+    document.getElementById('meta-channel').textContent = ch;
+    document.getElementById('meta-verified').style.display = verified ? 'inline-block' : 'none';
+    document.getElementById('meta-views').textContent = v + ' views';
+    document.getElementById('meta-time').textContent = t;
+
+    const letter = document.getElementById('avatar-letter');
+    letter.textContent = ch[0].toUpperCase();
+    document.getElementById('avatar-el').style.background = `linear-gradient(135deg, #ff0000, #cc0000)`;
   }
 
   function countChars(inputId, countId, max) {
-    const len = document.getElementById(inputId).value.length;
-    document.getElementById(countId).textContent = len;
-  }
-
-  function toggleDark() {
-    isDark = !isDark;
-    document.body.classList.toggle('dark', isDark);
-    document.querySelector('.btn').textContent = isDark ? '☀️ Light' : '🌙 Dark';
+    document.getElementById(countId).textContent = document.getElementById(inputId).value.length;
   }
 
   function resetAll() {
@@ -299,22 +501,30 @@
     document.getElementById('channel-inp').value = 'YourChannel';
     document.getElementById('title-inp').value = '';
     document.getElementById('desc-inp').value = '';
-    document.getElementById('views-inp').value = '1.2M';
-    document.getElementById('time-inp').value = '2 days ago';
+    document.getElementById('views-inp').value = '48K';
+    document.getElementById('time-inp').value = '2 weeks ago';
+    document.getElementById('duration-inp').value = '10:24';
     document.getElementById('title-count').textContent = '0';
     document.getElementById('desc-count').textContent = '0';
-    currentGrad = 0;
-    currentEmoji = '🎬';
-    document.querySelectorAll('.grad-btn').forEach((x,i) => x.classList.toggle('active', i===0));
-    document.querySelectorAll('.emoji-btn').forEach(x => x.classList.toggle('active', x.textContent==='🎬'));
-    document.getElementById('thumb-inner').style.background = GRADIENTS[0];
-    document.getElementById('thumb-emoji').textContent = '🎬';
-    document.getElementById('thumb-text').style.display = 'none';
+    document.getElementById('verified-chk').checked = true;
+    document.getElementById('thumb-img').style.display = 'none';
+    document.getElementById('thumb-emoji-el').style.display = 'block';
+    document.getElementById('thumb-overlay-text').style.display = 'none';
+    document.getElementById('upload-preview').style.display = 'none';
+    document.getElementById('upload-placeholder').style.display = 'block';
+    document.getElementById('change-img-btn').style.display = 'none';
+    document.getElementById('upload-area').classList.remove('has-image');
+    document.getElementById('duration-badge').textContent = '10:24';
     document.getElementById('card-title').textContent = 'Your video title will appear here';
     document.getElementById('card-title').classList.add('placeholder');
     document.getElementById('card-desc').style.display = 'none';
-    document.getElementById('card-meta').textContent = 'YourChannel · 1.2M views · 2 days ago';
-    document.getElementById('avatar').textContent = 'Y';
+    document.getElementById('meta-channel').textContent = 'YourChannel';
+    document.getElementById('meta-views').textContent = '48K views';
+    document.getElementById('meta-time').textContent = '2 weeks ago';
+    document.getElementById('meta-verified').style.display = 'inline-block';
+    document.getElementById('avatar-letter').textContent = 'Y';
+    textColor = '#ffffff';
+    document.querySelectorAll('.color-dot').forEach((d,i) => d.classList.toggle('active', i===0));
   }
 </script>
 </body>
