@@ -32,7 +32,6 @@
   .row2 > div { flex: 1; }
   .sub-label { font-size: 11px; color: #888; margin-bottom: 6px; }
 
-  /* UPLOAD AREAS */
   .upload-area { width: 100%; border: 2px dashed #3f3f3f; border-radius: 10px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.2s; background: #2a2a2a; position: relative; overflow: hidden; }
   .upload-area:hover { border-color: #ff0000; background: #2f2020; }
   .upload-area.has-image { border-style: solid; border-color: #ff0000; padding: 0; }
@@ -40,7 +39,6 @@
   .upload-text { font-size: 12px; color: #aaa; line-height: 1.5; }
   .upload-size { font-size: 10px; color: #ff6666; margin-top: 3px; font-weight: 600; }
 
-  /* DRAG CONTROLS */
   .drag-controls { display: none; background: #1a1a1a; border-radius: 8px; padding: 10px; margin-top: 8px; }
   .drag-controls.visible { display: block; }
   .drag-hint { font-size: 11px; color: #888; margin-bottom: 8px; text-align: center; }
@@ -49,17 +47,14 @@
   .slider-row input[type=range] { flex: 1; accent-color: #ff0000; cursor: pointer; }
   .slider-val { font-size: 11px; color: #aaa; width: 32px; text-align: right; flex-shrink: 0; }
 
-  /* COLOR DOTS */
   .overlay-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
   .color-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all 0.15s; flex-shrink: 0; }
   .color-dot.active { border-color: #fff; transform: scale(1.2); }
 
-  /* RIGHT */
   #right { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 40px; overflow-y: auto; background: #0f0f0f; }
 
   #card { width: 100%; max-width: 500px; }
 
-  /* THUMBNAIL */
   #thumb-wrap { position: relative; width: 100%; border-radius: 12px; overflow: hidden; background: #1a1a1a; aspect-ratio: 16/9; cursor: grab; user-select: none; }
   #thumb-wrap:active { cursor: grabbing; }
   #thumb-bg { position: absolute; inset: 0; background: linear-gradient(135deg,#1a1a2e,#0f3460); }
@@ -68,11 +63,10 @@
   #thumb-overlay-text { position: absolute; bottom: 14px; left: 14px; right: 60px; font-size: 20px; font-weight: 900; color: white; text-shadow: 2px 3px 10px rgba(0,0,0,0.9); line-height: 1.2; display: none; word-break: break-word; pointer-events: none; }
   #duration-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.85); color: white; padding: 2px 6px; border-radius: 4px; font-size: 13px; font-weight: 700; pointer-events: none; }
 
-  /* INFO ROW */
   #info-row { display: flex; gap: 12px; align-items: flex-start; margin-top: 12px; padding: 0 2px; }
   #avatar-wrap { position: relative; width: 40px; height: 40px; min-width: 40px; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg,#ff0000,#cc0000); cursor: grab; user-select: none; flex-shrink: 0; }
   #avatar-wrap:active { cursor: grabbing; }
-  #avatar-img { position: absolute; width: 100%; height: 100%; object-fit: cover; display: none; }
+  #avatar-img { position: absolute; width: 100%; height: 100%; object-fit: cover; display: none; transform-origin: center; }
   #avatar-letter { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 15px; }
   #info-body { flex: 1; min-width: 0; }
   #card-title { font-size: 15px; font-weight: 600; line-height: 1.4; margin-bottom: 4px; color: #f1f1f1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -82,8 +76,6 @@
   #card-desc { font-size: 12px; color: #aaa; margin-top: 8px; line-height: 1.5; display: none; background: #1a1a1a; border-radius: 8px; padding: 8px 10px; }
 
   #yt-footer { text-align: center; margin-top: 22px; opacity: 0.3; }
-
-  /* HIDDEN CANVAS */
   #export-canvas { display: none; }
 </style>
 </head>
@@ -107,7 +99,6 @@
 <div id="main">
   <div id="left">
 
-    <!-- THUMBNAIL -->
     <div class="section-label">🖼 Thumbnail <span style="color:#555;font-size:9px;text-transform:none;letter-spacing:0;font-weight:400">1280×720px recommended</span></div>
     <div class="upload-area" id="thumb-upload" onclick="document.getElementById('thumb-file').click()">
       <div id="thumb-placeholder">
@@ -121,7 +112,7 @@
     <input type="file" id="thumb-file" accept="image/*" onchange="handleThumb(event)" style="display:none">
 
     <div class="drag-controls" id="thumb-drag-controls">
-      <div class="drag-hint">🖱 Drag image in preview to reposition</div>
+      <div class="drag-hint">🖱 Drag thumbnail in preview to reposition</div>
       <div class="slider-row">
         <label>Zoom</label>
         <input type="range" id="thumb-zoom" min="100" max="300" value="100" oninput="updateThumbTransform()">
@@ -131,7 +122,6 @@
 
     <div class="divider"></div>
 
-    <!-- TEXT ON THUMBNAIL -->
     <div class="section-label">✍️ Text on Thumbnail</div>
     <input class="inp" id="thumb-text-inp" type="text" placeholder="e.g. $5/day WORKS?!" oninput="updateThumbText()" style="margin-bottom:8px">
     <div class="overlay-row">
@@ -145,13 +135,11 @@
 
     <div class="divider"></div>
 
-    <!-- DURATION -->
     <div class="section-label">⏱ Duration</div>
     <input class="inp" id="duration-inp" type="text" value="10:24" oninput="updateDuration()">
 
     <div class="divider"></div>
 
-    <!-- PROFILE PICTURE -->
     <div class="section-label">👤 Profile Picture <span style="color:#555;font-size:9px;text-transform:none;letter-spacing:0;font-weight:400">800×800px recommended</span></div>
     <div class="upload-area" id="avatar-upload" onclick="document.getElementById('avatar-file').click()" style="padding:12px">
       <div id="avatar-placeholder">
@@ -159,16 +147,15 @@
         <div class="upload-text">Click to upload profile pic</div>
         <div class="upload-size">⚡ Best: 800 × 800 px (1:1)</div>
       </div>
-      <div id="avatar-preview-wrap" style="display:none;display:none">
+      <div id="avatar-preview-wrap" style="display:none">
         <img id="avatar-preview" style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin:0 auto;display:block" alt="">
         <div style="font-size:11px;color:#aaa;text-align:center;margin-top:6px">Click to change</div>
       </div>
-      <button id="avatar-change-btn" style="display:none;width:100%;padding:7px;background:rgba(0,0,0,0.7);color:#fff;border:none;font-size:12px;cursor:pointer;font-family:inherit" onclick="event.stopPropagation();document.getElementById('avatar-file').click()">🔄 Change Photo</button>
     </div>
     <input type="file" id="avatar-file" accept="image/*" onchange="handleAvatar(event)" style="display:none">
 
     <div class="drag-controls" id="avatar-drag-controls">
-      <div class="drag-hint">🖱 Drag image in avatar to reposition</div>
+      <div class="drag-hint">🖱 Drag avatar in preview to reposition</div>
       <div class="slider-row">
         <label>Zoom</label>
         <input type="range" id="avatar-zoom" min="100" max="300" value="100" oninput="updateAvatarTransform()">
@@ -178,27 +165,23 @@
 
     <div class="divider"></div>
 
-    <!-- CHANNEL -->
     <div class="section-label">📺 Channel Name</div>
     <input class="inp" id="channel-inp" type="text" value="YourChannel" oninput="updateMeta()">
 
     <div class="divider"></div>
 
-    <!-- TITLE -->
     <div class="section-label">📝 Video Title</div>
     <textarea class="inp" id="title-inp" rows="3" placeholder="Write your video title here..." oninput="updateTitle();countChars('title-inp','title-count')" maxlength="100"></textarea>
     <div class="char-count"><span id="title-count">0</span> / 100</div>
 
     <div class="divider"></div>
 
-    <!-- DESCRIPTION -->
     <div class="section-label">📋 Description (optional)</div>
     <textarea class="inp" id="desc-inp" rows="4" placeholder="Add a short description..." oninput="updateDesc();countChars('desc-inp','desc-count')" maxlength="300"></textarea>
     <div class="char-count"><span id="desc-count">0</span> / 300</div>
 
     <div class="divider"></div>
 
-    <!-- STATS -->
     <div class="section-label">📊 Stats</div>
     <div class="row2">
       <div><div class="sub-label">Views</div><input class="inp" id="views-inp" type="text" value="48K" oninput="updateMeta()"></div>
@@ -211,10 +194,8 @@
 
   </div>
 
-  <!-- RIGHT -->
   <div id="right">
     <div id="card">
-
       <div id="thumb-wrap">
         <div id="thumb-bg"></div>
         <img id="thumb-img" alt="thumbnail">
@@ -222,7 +203,6 @@
         <div id="thumb-overlay-text"></div>
         <div id="duration-badge">10:24</div>
       </div>
-
       <div id="info-row">
         <div id="avatar-wrap">
           <img id="avatar-img" alt="avatar">
@@ -241,7 +221,6 @@
           <div id="card-desc"></div>
         </div>
       </div>
-
     </div>
     <div id="yt-footer">
       <svg viewBox="0 0 110 24" fill="none" style="height:18px;width:auto">
@@ -256,12 +235,11 @@
 <canvas id="export-canvas"></canvas>
 
 <script>
-// ── STATE ──
 let textColor = '#ffffff';
 let thumbOffX = 0, thumbOffY = 0, thumbZoom = 1;
 let avatarOffX = 0, avatarOffY = 0, avatarZoom = 1;
-let thumbImgEl = document.getElementById('thumb-img');
-let avatarImgEl = document.getElementById('avatar-img');
+const thumbImgEl = document.getElementById('thumb-img');
+const avatarImgEl = document.getElementById('avatar-img');
 let thumbSrc = null, avatarSrc = null;
 
 // ── THUMBNAIL UPLOAD ──
@@ -269,8 +247,7 @@ function handleThumb(e) {
   const file = e.target.files[0]; if (!file) return;
   const url = URL.createObjectURL(file);
   thumbSrc = url;
-  thumbImgEl.src = url;
-  thumbImgEl.style.display = 'block';
+  thumbImgEl.src = url; thumbImgEl.style.display = 'block';
   document.getElementById('thumb-emoji-el').style.display = 'none';
   const prev = document.getElementById('thumb-preview');
   prev.src = url; prev.style.display = 'block';
@@ -283,60 +260,24 @@ function handleThumb(e) {
   document.getElementById('thumb-zoom-val').textContent = '100%';
   updateThumbTransform();
 }
-
 function updateThumbTransform() {
-  const z = document.getElementById('thumb-zoom').value;
+  const z = parseInt(document.getElementById('thumb-zoom').value);
   thumbZoom = z / 100;
   document.getElementById('thumb-zoom-val').textContent = z + '%';
-  thumbImgEl.style.transform = `translate(${thumbOffX}px, ${thumbOffY}px) scale(${thumbZoom})`;
+  thumbImgEl.style.transform = `translate(${thumbOffX}px,${thumbOffY}px) scale(${thumbZoom})`;
 }
-
-// Drag for thumbnail
-let thumbDragging = false, thumbDragStartX, thumbDragStartY, thumbDragOriginX, thumbDragOriginY;
-const thumbWrap = document.getElementById('thumb-wrap');
-thumbWrap.addEventListener('mousedown', e => {
-  if (!thumbSrc) return;
-  thumbDragging = true;
-  thumbDragStartX = e.clientX; thumbDragStartY = e.clientY;
-  thumbDragOriginX = thumbOffX; thumbDragOriginY = thumbOffY;
-  e.preventDefault();
-});
-window.addEventListener('mousemove', e => {
-  if (!thumbDragging) return;
-  thumbOffX = thumbDragOriginX + (e.clientX - thumbDragStartX);
-  thumbOffY = thumbDragOriginY + (e.clientY - thumbDragStartY);
-  thumbImgEl.style.transform = `translate(${thumbOffX}px, ${thumbOffY}px) scale(${thumbZoom})`;
-});
-window.addEventListener('mouseup', () => { thumbDragging = false; });
-
-// Touch drag thumbnail
-thumbWrap.addEventListener('touchstart', e => {
-  if (!thumbSrc) return;
-  thumbDragging = true;
-  thumbDragStartX = e.touches[0].clientX; thumbDragStartY = e.touches[0].clientY;
-  thumbDragOriginX = thumbOffX; thumbDragOriginY = thumbOffY;
-}, {passive:true});
-window.addEventListener('touchmove', e => {
-  if (!thumbDragging) return;
-  thumbOffX = thumbDragOriginX + (e.touches[0].clientX - thumbDragStartX);
-  thumbOffY = thumbDragOriginY + (e.touches[0].clientY - thumbDragStartY);
-  thumbImgEl.style.transform = `translate(${thumbOffX}px, ${thumbOffY}px) scale(${thumbZoom})`;
-}, {passive:true});
-window.addEventListener('touchend', () => { thumbDragging = false; });
 
 // ── AVATAR UPLOAD ──
 function handleAvatar(e) {
   const file = e.target.files[0]; if (!file) return;
   const url = URL.createObjectURL(file);
   avatarSrc = url;
-  avatarImgEl.src = url;
-  avatarImgEl.style.display = 'block';
+  avatarImgEl.src = url; avatarImgEl.style.display = 'block';
   document.getElementById('avatar-letter').style.display = 'none';
   const prev = document.getElementById('avatar-preview');
   prev.src = url;
   document.getElementById('avatar-preview-wrap').style.display = 'block';
   document.getElementById('avatar-placeholder').style.display = 'none';
-  document.getElementById('avatar-change-btn').style.display = 'block';
   document.getElementById('avatar-upload').classList.add('has-image');
   document.getElementById('avatar-drag-controls').classList.add('visible');
   avatarOffX = 0; avatarOffY = 0; avatarZoom = 1;
@@ -344,45 +285,32 @@ function handleAvatar(e) {
   document.getElementById('avatar-zoom-val').textContent = '100%';
   updateAvatarTransform();
 }
-
 function updateAvatarTransform() {
-  const z = document.getElementById('avatar-zoom').value;
+  const z = parseInt(document.getElementById('avatar-zoom').value);
   avatarZoom = z / 100;
   document.getElementById('avatar-zoom-val').textContent = z + '%';
-  avatarImgEl.style.transform = `translate(${avatarOffX}px, ${avatarOffY}px) scale(${avatarZoom})`;
+  avatarImgEl.style.transform = `translate(${avatarOffX}px,${avatarOffY}px) scale(${avatarZoom})`;
 }
 
-// Drag for avatar
-let avatarDragging = false, avatarDragStartX, avatarDragStartY, avatarDragOriginX, avatarDragOriginY;
-const avatarWrap = document.getElementById('avatar-wrap');
-avatarWrap.addEventListener('mousedown', e => {
-  if (!avatarSrc) return;
-  avatarDragging = true;
-  avatarDragStartX = e.clientX; avatarDragStartY = e.clientY;
-  avatarDragOriginX = avatarOffX; avatarDragOriginY = avatarOffY;
-  e.preventDefault();
-});
-window.addEventListener('mousemove', e => {
-  if (!avatarDragging) return;
-  avatarOffX = avatarDragOriginX + (e.clientX - avatarDragStartX);
-  avatarOffY = avatarDragOriginY + (e.clientY - avatarDragStartY);
-  avatarImgEl.style.transform = `translate(${avatarOffX}px, ${avatarOffY}px) scale(${avatarZoom})`;
-});
-window.addEventListener('mouseup', () => { avatarDragging = false; });
+// ── DRAG THUMB ──
+let thumbDragging = false, tDSX, tDSY, tDOX, tDOY;
+const thumbWrap = document.getElementById('thumb-wrap');
+thumbWrap.addEventListener('mousedown', e => { if (!thumbSrc) return; thumbDragging=true; tDSX=e.clientX; tDSY=e.clientY; tDOX=thumbOffX; tDOY=thumbOffY; e.preventDefault(); });
+window.addEventListener('mousemove', e => { if (!thumbDragging) return; thumbOffX=tDOX+(e.clientX-tDSX); thumbOffY=tDOY+(e.clientY-tDSY); thumbImgEl.style.transform=`translate(${thumbOffX}px,${thumbOffY}px) scale(${thumbZoom})`; });
+window.addEventListener('mouseup', () => { thumbDragging=false; });
+thumbWrap.addEventListener('touchstart', e => { if (!thumbSrc) return; thumbDragging=true; tDSX=e.touches[0].clientX; tDSY=e.touches[0].clientY; tDOX=thumbOffX; tDOY=thumbOffY; },{passive:true});
+window.addEventListener('touchmove', e => { if (!thumbDragging) return; thumbOffX=tDOX+(e.touches[0].clientX-tDSX); thumbOffY=tDOY+(e.touches[0].clientY-tDSY); thumbImgEl.style.transform=`translate(${thumbOffX}px,${thumbOffY}px) scale(${thumbZoom})`; },{passive:true});
+window.addEventListener('touchend', () => { thumbDragging=false; });
 
-avatarWrap.addEventListener('touchstart', e => {
-  if (!avatarSrc) return;
-  avatarDragging = true;
-  avatarDragStartX = e.touches[0].clientX; avatarDragStartY = e.touches[0].clientY;
-  avatarDragOriginX = avatarOffX; avatarDragOriginY = avatarOffY;
-}, {passive:true});
-window.addEventListener('touchmove', e => {
-  if (!avatarDragging) return;
-  avatarOffX = avatarDragOriginX + (e.touches[0].clientX - avatarDragStartX);
-  avatarOffY = avatarDragOriginY + (e.touches[0].clientY - avatarDragStartY);
-  avatarImgEl.style.transform = `translate(${avatarOffX}px, ${avatarOffY}px) scale(${avatarZoom})`;
-}, {passive:true});
-window.addEventListener('touchend', () => { avatarDragging = false; });
+// ── DRAG AVATAR ──
+let avatarDragging = false, aDSX, aDSY, aDOX, aDOY;
+const avatarWrap = document.getElementById('avatar-wrap');
+avatarWrap.addEventListener('mousedown', e => { if (!avatarSrc) return; avatarDragging=true; aDSX=e.clientX; aDSY=e.clientY; aDOX=avatarOffX; aDOY=avatarOffY; e.preventDefault(); });
+window.addEventListener('mousemove', e => { if (!avatarDragging) return; avatarOffX=aDOX+(e.clientX-aDSX); avatarOffY=aDOY+(e.clientY-aDSY); avatarImgEl.style.transform=`translate(${avatarOffX}px,${avatarOffY}px) scale(${avatarZoom})`; });
+window.addEventListener('mouseup', () => { avatarDragging=false; });
+avatarWrap.addEventListener('touchstart', e => { if (!avatarSrc) return; avatarDragging=true; aDSX=e.touches[0].clientX; aDSY=e.touches[0].clientY; aDOX=avatarOffX; aDOY=avatarOffY; },{passive:true});
+window.addEventListener('touchmove', e => { if (!avatarDragging) return; avatarOffX=aDOX+(e.touches[0].clientX-aDSX); avatarOffY=aDOY+(e.touches[0].clientY-aDSY); avatarImgEl.style.transform=`translate(${avatarOffX}px,${avatarOffY}px) scale(${avatarZoom})`; },{passive:true});
+window.addEventListener('touchend', () => { avatarDragging=false; });
 
 // ── FIELDS ──
 function updateThumbText() {
@@ -418,7 +346,7 @@ function updateMeta() {
   document.getElementById('meta-verified').style.display = verified ? 'inline-block' : 'none';
   document.getElementById('meta-views').textContent = v + ' views';
   document.getElementById('meta-time').textContent = t;
-  document.getElementById('avatar-letter').textContent = ch[0].toUpperCase();
+  if (!avatarSrc) document.getElementById('avatar-letter').textContent = ch[0].toUpperCase();
 }
 function countChars(inp, cnt) {
   document.getElementById(cnt).textContent = document.getElementById(inp).value.length;
@@ -426,111 +354,172 @@ function countChars(inp, cnt) {
 
 // ── DOWNLOAD ──
 async function downloadImage() {
-  const card = document.getElementById('card');
-  const rect = card.getBoundingClientRect();
-  const W = Math.round(rect.width * 2);
-  const H = Math.round(rect.height * 2);
+  const S = 2; // scale factor for retina
+  const W = 600 * S;
+  const thumbH = Math.round(W * 9 / 16);
+
+  // Measure info section height
+  const avatarSize = 40 * S;
+  const infoTopPad = 12 * S;
+  const titleVal = document.getElementById('title-inp').value || 'Your video title will appear here';
+  const descVal = document.getElementById('desc-inp').value;
+  const hasDesc = !!descVal;
+
+  // Estimate heights
+  const titleLines = Math.min(2, Math.ceil(titleVal.length / 38) || 1);
+  const titleHeight = titleLines * 22 * S;
+  const metaHeight = 20 * S;
+  const descHeight = hasDesc ? (12 * S + 50 * S) : 0;
+  const infoHeight = Math.max(avatarSize, titleHeight + metaHeight + descHeight + 10 * S) + 20 * S;
+  const totalH = thumbH + infoTopPad + infoHeight + 20 * S;
+
   const canvas = document.getElementById('export-canvas');
-  canvas.width = W; canvas.height = H;
+  canvas.width = W;
+  canvas.height = totalH;
   const ctx = canvas.getContext('2d');
-  const scale = 2;
 
-  // Background
+  // ── BG ──
   ctx.fillStyle = '#0f0f0f';
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillRect(0, 0, W, totalH);
 
-  // Thumbnail
-  const thumbW = W;
-  const thumbH = Math.round(thumbW * 9 / 16);
-  const thumbR = 12 * scale;
-  roundRect(ctx, 0, 0, thumbW, thumbH, thumbR);
+  // ── THUMBNAIL ──
   ctx.save();
+  roundRectPath(ctx, 0, 0, W, thumbH, 12 * S);
   ctx.clip();
 
   if (thumbSrc) {
-    await drawImg(ctx, thumbSrc, 0, 0, thumbW, thumbH, thumbOffX * scale, thumbOffY * scale, thumbZoom);
+    await drawImgFit(ctx, thumbSrc, 0, 0, W, thumbH, thumbOffX * S, thumbOffY * S, thumbZoom);
   } else {
-    const grd = ctx.createLinearGradient(0, 0, thumbW, thumbH);
+    const grd = ctx.createLinearGradient(0, 0, W, thumbH);
     grd.addColorStop(0, '#1a1a2e'); grd.addColorStop(1, '#0f3460');
-    ctx.fillStyle = grd; ctx.fillRect(0, 0, thumbW, thumbH);
-    ctx.font = `${64*scale}px serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('🎬', thumbW/2, thumbH/2);
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, W, thumbH);
+    ctx.font = `${64 * S}px serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('🎬', W / 2, thumbH / 2);
   }
   ctx.restore();
 
-  // Overlay text
+  // Overlay text on thumbnail
   const overlayText = document.getElementById('thumb-text-inp').value;
   if (overlayText) {
-    ctx.font = `900 ${20*scale}px 'Roboto','Segoe UI',sans-serif`;
+    ctx.font = `900 ${20 * S}px Arial, sans-serif`;
     ctx.fillStyle = textColor;
-    ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 8*scale;
-    ctx.fillText(overlayText, 14*scale, thumbH - 22*scale);
-    ctx.shadowBlur = 0;
+    ctx.shadowColor = 'rgba(0,0,0,0.95)'; ctx.shadowBlur = 8 * S; ctx.shadowOffsetX = 1; ctx.shadowOffsetY = 1;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+    ctx.fillText(overlayText, 14 * S, thumbH - 18 * S);
+    ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
   }
 
   // Duration badge
   const dur = document.getElementById('duration-inp').value || '10:24';
-  const badgeH = 22*scale, badgePad = 6*scale;
-  ctx.font = `700 ${13*scale}px 'Roboto','Segoe UI',sans-serif`;
-  const bw = ctx.measureText(dur).width + badgePad*2;
-  const bx = thumbW - bw - 8*scale, by = thumbH - badgeH - 8*scale;
+  ctx.font = `700 ${13 * S}px Arial, sans-serif`;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+  const durW = ctx.measureText(dur).width + 10 * S;
+  const durH = 22 * S;
+  const durX = W - durW - 8 * S;
+  const durY = thumbH - durH - 8 * S;
   ctx.fillStyle = 'rgba(0,0,0,0.85)';
-  roundRect(ctx, bx, by, bw, badgeH, 4*scale); ctx.fill();
-  ctx.fillStyle = 'white'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText(dur, bx + bw/2, by + badgeH/2);
+  roundRectPath(ctx, durX, durY, durW, durH, 4 * S); ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(dur, durX + durW / 2, durY + durH / 2);
 
-  // Info row
-  const infoY = thumbH + 12*scale;
-  const avatarSize = 40*scale;
+  // ── INFO ROW ──
+  const rowY = thumbH + infoTopPad;
+  const leftPad = 2 * S;
 
-  // Avatar circle
+  // Avatar
   ctx.save();
-  ctx.beginPath();
-  ctx.arc(avatarSize/2, infoY + avatarSize/2, avatarSize/2, 0, Math.PI*2);
+  roundRectPath(ctx, leftPad, rowY, avatarSize, avatarSize, avatarSize / 2);
   ctx.clip();
   if (avatarSrc) {
-    await drawImg(ctx, avatarSrc, 0, infoY, avatarSize, avatarSize, avatarOffX*scale, avatarOffY*scale, avatarZoom);
+    await drawImgFit(ctx, avatarSrc, leftPad, rowY, avatarSize, avatarSize, avatarOffX * S, avatarOffY * S, avatarZoom);
   } else {
-    const ag = ctx.createLinearGradient(0,infoY,0,infoY+avatarSize);
-    ag.addColorStop(0,'#ff0000'); ag.addColorStop(1,'#cc0000');
-    ctx.fillStyle = ag; ctx.fillRect(0, infoY, avatarSize, avatarSize);
+    const ag = ctx.createLinearGradient(leftPad, rowY, leftPad, rowY + avatarSize);
+    ag.addColorStop(0, '#ff0000'); ag.addColorStop(1, '#cc0000');
+    ctx.fillStyle = ag;
+    ctx.fillRect(leftPad, rowY, avatarSize, avatarSize);
     const ch = document.getElementById('channel-inp').value || 'Y';
-    ctx.font = `700 ${16*scale}px 'Roboto','Segoe UI',sans-serif`;
+    ctx.font = `700 ${16 * S}px Arial, sans-serif`;
     ctx.fillStyle = 'white'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(ch[0].toUpperCase(), avatarSize/2, infoY + avatarSize/2);
+    ctx.fillText(ch[0].toUpperCase(), leftPad + avatarSize / 2, rowY + avatarSize / 2);
   }
   ctx.restore();
 
+  // Text info
+  const textX = leftPad + avatarSize + 12 * S;
+  const textMaxW = W - textX - 4 * S;
+  let curY = rowY;
+
   // Title
-  const titleX = avatarSize + 12*scale;
-  const titleVal = document.getElementById('title-inp').value || 'Your video title will appear here';
-  ctx.font = `600 ${15*scale}px 'Roboto','Segoe UI',sans-serif`;
-  ctx.fillStyle = document.getElementById('title-inp').value ? '#f1f1f1' : '#555';
+  ctx.font = `600 ${15 * S}px Arial, sans-serif`;
+  ctx.fillStyle = document.getElementById('title-inp').value ? '#f1f1f1' : '#555555';
   ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-  wrapText(ctx, titleVal, titleX, infoY, W - titleX, 22*scale, 2);
+  curY += wrapText(ctx, titleVal, textX, curY, textMaxW, 22 * S, 2);
+  curY += 5 * S;
 
-  // Meta
-  const metaY = infoY + 44*scale;
-  const ch2 = document.getElementById('channel-inp').value || 'YourChannel';
-  const views = document.getElementById('views-inp').value || '48K';
-  const timeAgo = document.getElementById('time-inp').value || '2 weeks ago';
-  const verified = document.getElementById('verified-chk').checked;
-  ctx.font = `${13*scale}px 'Roboto','Segoe UI',sans-serif`;
-  ctx.fillStyle = '#aaa';
-  let metaStr = ch2 + (verified ? ' ✓' : '') + ' · ' + views + ' views · ' + timeAgo;
-  ctx.fillText(metaStr, titleX, metaY);
+  // Meta line: channel · verified · views · time
+  const chName = document.getElementById('channel-inp').value || 'YourChannel';
+  const views = document.getElementById('views-inp').value || '0';
+  const timeAgo = document.getElementById('time-inp').value || 'just now';
+  const showVerified = document.getElementById('verified-chk').checked;
 
-  // Description
-  const descVal = document.getElementById('desc-inp').value;
-  if (descVal) {
-    const descY = metaY + 22*scale;
-    ctx.fillStyle = '#1a1a1a';
-    roundRect(ctx, titleX, descY, W - titleX - 4*scale, 50*scale, 8*scale); ctx.fill();
-    ctx.font = `${12*scale}px 'Roboto','Segoe UI',sans-serif`;
-    ctx.fillStyle = '#aaa';
-    wrapText(ctx, descVal.slice(0,150), titleX + 8*scale, descY + 8*scale, W - titleX - 20*scale, 18*scale, 2);
+  ctx.font = `${13 * S}px Arial, sans-serif`;
+  ctx.fillStyle = '#aaaaaa';
+  ctx.textBaseline = 'top';
+
+  // Draw channel name
+  ctx.fillText(chName, textX, curY);
+  let metaX = textX + ctx.measureText(chName).width + 4 * S;
+
+  // Draw verified badge
+  if (showVerified) {
+    const badgeR = 7 * S;
+    const badgeCX = metaX + badgeR;
+    const badgeCY = curY + badgeR;
+    ctx.fillStyle = '#aaaaaa';
+    ctx.beginPath();
+    ctx.arc(badgeCX, badgeCY, badgeR, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#212121';
+    ctx.font = `700 ${9 * S}px Arial, sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('✓', badgeCX, badgeCY);
+    metaX = badgeCX + badgeR + 6 * S;
+    ctx.font = `${13 * S}px Arial, sans-serif`;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
   }
 
+  // Dot + views + dot + time
+  ctx.fillStyle = '#666666';
+  ctx.fillText(' · ', metaX, curY);
+  metaX += ctx.measureText(' · ').width;
+  ctx.fillStyle = '#aaaaaa';
+  ctx.fillText(views + ' views', metaX, curY);
+  metaX += ctx.measureText(views + ' views').width;
+  ctx.fillStyle = '#666666';
+  ctx.fillText(' · ', metaX, curY);
+  metaX += ctx.measureText(' · ').width;
+  ctx.fillStyle = '#aaaaaa';
+  ctx.fillText(timeAgo, metaX, curY);
+  curY += 20 * S;
+
+  // Description
+  if (hasDesc) {
+    curY += 8 * S;
+    const dPad = 8 * S;
+    const dW = textMaxW;
+    const dH = 50 * S;
+    ctx.fillStyle = '#1a1a1a';
+    roundRectPath(ctx, textX, curY, dW, dH, 8 * S); ctx.fill();
+    ctx.font = `${12 * S}px Arial, sans-serif`;
+    ctx.fillStyle = '#aaaaaa';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    wrapText(ctx, descVal.slice(0, 160), textX + dPad, curY + dPad, dW - dPad * 2, 18 * S, 2);
+  }
+
+  // ── EXPORT ──
   canvas.toBlob(blob => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -539,46 +528,55 @@ async function downloadImage() {
   }, 'image/png');
 }
 
-function roundRect(ctx, x, y, w, h, r) {
+// ── HELPERS ──
+function roundRectPath(ctx, x, y, w, h, r) {
   ctx.beginPath();
-  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
-  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
-  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
-  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r); ctx.closePath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y); ctx.arcTo(x + w, y, x + w, y + r, r);
+  ctx.lineTo(x + w, y + h - r); ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+  ctx.lineTo(x + r, y + h); ctx.arcTo(x, y + h, x, y + h - r, r);
+  ctx.lineTo(x, y + r); ctx.arcTo(x, y, x + r, y, r);
+  ctx.closePath();
 }
 
-function drawImg(ctx, src, x, y, w, h, offX, offY, zoom) {
+function drawImgFit(ctx, src, x, y, w, h, offX, offY, zoom) {
   return new Promise(res => {
-    const img = new Image(); img.crossOrigin='anonymous';
+    const img = new Image();
     img.onload = () => {
       ctx.save();
-      ctx.translate(x + w/2 + offX, y + h/2 + offY);
+      ctx.translate(x + w / 2 + offX, y + h / 2 + offY);
       ctx.scale(zoom, zoom);
-      const scale = Math.max(w / img.width, h / img.height);
-      ctx.drawImage(img, -img.width*scale/2, -img.height*scale/2, img.width*scale, img.height*scale);
-      ctx.restore(); res();
+      const s = Math.max(w / img.width, h / img.height);
+      ctx.drawImage(img, -img.width * s / 2, -img.height * s / 2, img.width * s, img.height * s);
+      ctx.restore();
+      res();
     };
+    img.onerror = res;
     img.src = src;
   });
 }
 
 function wrapText(ctx, text, x, y, maxW, lineH, maxLines) {
-  const words = text.split(' '); let line = ''; let lines = 0;
-  for (let w of words) {
-    const test = line + (line ? ' ' : '') + w;
+  const words = text.split(' ');
+  let line = '', lines = 0;
+  for (const word of words) {
+    const test = line ? line + ' ' + word : word;
     if (ctx.measureText(test).width > maxW && line) {
+      if (lines >= maxLines - 1) { ctx.fillText(line + '…', x, y + lines * lineH); lines++; break; }
       ctx.fillText(line, x, y + lines * lineH);
-      line = w; lines++;
-      if (lines >= maxLines - 1) { line += '...'; break; }
+      line = word; lines++;
     } else { line = test; }
   }
-  if (lines < maxLines) ctx.fillText(line, x, y + lines * lineH);
+  if (lines < maxLines && line) { ctx.fillText(line, x, y + lines * lineH); lines++; }
+  return lines * lineH;
 }
 
 // ── RESET ──
 function resetAll() {
-  ['thumb-text-inp','channel-inp','title-inp','desc-inp'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('thumb-text-inp').value = '';
   document.getElementById('channel-inp').value = 'YourChannel';
+  document.getElementById('title-inp').value = '';
+  document.getElementById('desc-inp').value = '';
   document.getElementById('views-inp').value = '48K';
   document.getElementById('time-inp').value = '2 weeks ago';
   document.getElementById('duration-inp').value = '10:24';
@@ -596,7 +594,6 @@ function resetAll() {
   document.getElementById('thumb-drag-controls').classList.remove('visible');
   document.getElementById('avatar-placeholder').style.display = 'block';
   document.getElementById('avatar-preview-wrap').style.display = 'none';
-  document.getElementById('avatar-change-btn').style.display = 'none';
   document.getElementById('avatar-upload').classList.remove('has-image');
   document.getElementById('avatar-drag-controls').classList.remove('visible');
   document.getElementById('avatar-letter').style.display = 'flex';
